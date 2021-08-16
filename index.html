@@ -9,21 +9,59 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 </head>
 <body>
-   <div class="container">
-    <div class="title">
-      <h1>Typing Game</h1>
-      <div class="marker"></div>
+   <div id="app" class="container">
+
+      <div class="title">
+        <h1>Typing Game</h1>
+        <div class="marker"></div>
+      </div>
+
+      <button @click="gameStart" v-if="!start_flg" class="startButton mb-20">START</button>
+    
+      <div v-if="start_flg">
+        <div class="question mb-20">{{current_question}}</div>
+        <div class="clear">CLEAR!</div>
+
+        <div class="typeFormWrapper mb-20">
+          <input type="text" v-model="type_box" class="typeForm">
+        </div>
+
+        <div class="gaugeWrapper mb-20">
+          <div class="gauge"></div>
+        </div>
+
+        <div>1/5</div>
+
+      </div>
+
     </div>
-    <button class="startButton mb-20">START</button>
-    <div class="question mb-20">apple</div>
-    <div class="clear">CLEAR!</div>
-    <div class="typeFormWrapper mb-20">
-      <input type="text" class="typeForm">
-    </div>
-    <div class="gaugeWrapper mb-20">
-      <div class="gauge"></div>
-    </div>
-    <div>1/5</div>
-   </div>
+   <script>
+   new Vue({
+     el:"#app",
+     data:{
+        start_flg:"",
+        current_question:"",
+        questions:["apple","banana","tomato","coral","marron","chestnuts","melon","kiwi"],
+        type_box:""
+     },
+     methods:{
+        gameStart:function(){
+          this.start_flg = true;
+        }
+     },
+     mounted:function(){
+       this.current_question = this.questions[0]
+     },
+     watch:{
+       type_box:function(e){
+         if (e == this.current_question){
+           this.questions.splice(0,1);
+           this.current_question = this.questions[0];
+           this.type_box = ""; 
+         }
+       }
+     }
+   })
+   </script>
 </body>
 </html>
